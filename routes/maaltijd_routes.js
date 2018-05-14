@@ -1,6 +1,7 @@
 let express = require('express');
 let router = express.Router();
 let maaltijd_controllers = require('../controllers/maaltijd_controllers');
+let auth = require("../auth/authentication");
 
 router.post('/api/studentenhuis/:huisId/maaltijd', maaltijd_controllers.createMaaltijd);
 router.get('/api/studentenhuis/:huisId/maaltijd', maaltijd_controllers.getMaaltijd);

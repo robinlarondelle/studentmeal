@@ -1,16 +1,60 @@
 let express = require('express');
 
+
+//Controller voor de deelnemers
 module.exports = {
-    createDeelnemer(req, res, next){
-        console.log('createDeelnemer(req, res, next) was called, huisId=' + req.params.huisId + ', maaltijdId=' + req.params.maaltijdId);
-        res.status(200).end();
+
+    
+    //Maak een nieuwe deelnemer
+    createDeelnemer(request, response, next){
+
+        //verkrijg de meegegeven gegevens
+        let huisID = request.params.huisId;
+        let maaltijdID = request.params.maaltijdId;
+
+        //Log
+        console.log('createDeelnemer was called. \r\n' +
+                    "huisID:        " + huisID + "\r\n" +
+                    "maaltijdID:    " + maaltijdID + "\r\n" + 
+                    "- - - - - - - - - - - - - - - - - \r\n");
+        
+        //Geef een response terug
+        response.status(200).end();
     },
-    getDeelnemer(req, res, next){
-        console.log('getDeelnemer(req, res, next) was called, huisId=' + req.params.huisId + ', maaltijdId=' + req.params.maaltijdId);
-        res.status(200).end();
+
+
+    //Verkrijg een deelnemenr
+    getDeelnemer(request, response, next){
+
+        //verkrijg de meegegeven gegevens
+        let huisID = request.params.huisId;
+        let maaltijdID = request.params.maaltijdId;
+
+        //Log
+        console.log('getDeelnemer was called. \r\n' +
+                    "huisID:        " + huisID + "\r\n" +
+                    "maaltijdID:    " + maaltijdID + "\r\n" + 
+                    "- - - - - - - - - - - - - - - - - \r\n");
+        
+        //Geef een response terug
+        response.status(200).end();
     },
-    deleteDeelnemer(req, res, next){
-        console.log('deleteDeelnemer(req, res, next) was called, huisId=' + req.params.huisId + ', maaltijdId=' + req.params.maaltijdId);
-        res.status(200).end();
+
+
+    //Verwijder een deelnemer
+    deleteDeelnemer(request, response, next){
+
+        //verkrijg de meegegeven gegevens
+        let huisID = request.params.huisId;
+        let maaltijdID = request.params.maaltijdId;
+
+        //Log
+        console.log('deleteDeelnemer was called. \r\n' +
+                    "huisID:        " + huisID + "\r\n" +
+                    "maaltijdID:    " + maaltijdID + "\r\n" + 
+                    "- - - - - - - - - - - - - - - - - \r\n");
+        
+        //Geef een response terug
+        response.status(200).end();
     }
 };
