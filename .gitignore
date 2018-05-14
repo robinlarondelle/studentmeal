@@ -64,3 +64,6 @@ typings/
 .idea/jwt.iml
 .idea/modules.xml
 .idea/workspace.xml
+.idea/vcs.xml
+.idea/misc.xml
+.idea/node-project.iml
