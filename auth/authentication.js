@@ -6,7 +6,7 @@ const jwt = require('jwt-simple');
 
 
 // Encode (van username naar token)
-function encodeToken(username) {
+function encodeToken(userID, userEmail) {
 
     //Payload maken
     const payload = {
@@ -14,7 +14,8 @@ function encodeToken(username) {
         //een "houdsbaarheidsdatum" toevoegen aan de code
         exp: moment().add(10, 'days').unix(),
         iat: moment().unix(),
-        sub: username
+        sub: userID,
+        email: userEmail
     };
 
     //Maak een encoded waarde aan
@@ -30,7 +31,7 @@ function encodeToken(username) {
 
 
 // Decode (van token naar username)
-function decodeToken(token, cb) {
+function decodeToken(token, callback) {
 
     try {
         
@@ -46,16 +47,16 @@ function decodeToken(token, cb) {
         }
 
         // Return
-        cb(null, payload);
+        callback(null, payload);
 
     } catch(error) {
 
-        cb(error, null);        
+        callback(error, null);        
     }
 
 }
 
-
+//Exports
 module.exports = {
     encodeToken,
     decodeToken
