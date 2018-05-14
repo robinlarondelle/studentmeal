@@ -1,3 +1,11 @@
+/* 
+ * Hier wordt beschreven hoe elke methode afgehandeld moet worden
+ * 
+ * Door Robin La Rondelle & Sjoerd Schepers
+ * 
+ */ 
+
+//imports
 let express = require('express');
 
 

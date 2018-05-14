@@ -1,3 +1,14 @@
+/*
+ *  Dit is de deelnemrs_routes.js
+ *  Dit is in feite het doorgeefluik van de applicatie.
+ *  In de deelnemers_controllers.js wordt beschreven hoe elke methode
+ *  afgehandeld moet worden.
+ * 
+ *  Door: Sjoerd Schepers & Robin La Rondelle
+ */
+
+
+//imports
 let express = require('express');
 let router = express.Router();
 let deelnemers_controller = require('../controllers/deelnemers_controllers');
