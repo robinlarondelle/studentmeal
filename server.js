@@ -9,7 +9,11 @@
 
 //imports
 const express = require('express');
-const app = express();
+const bodyParser = require('body-parser');
+
+let app = express();
+
+app.use(bodyParser.json());
 
 let studentenhuis_routes = require('./routes/studentenhuis_routes');
 let maaltijd_routes = require('./routes/maaltijd_routes');
@@ -21,7 +25,6 @@ let port = process.env.PORT || 3000;
 app.use(studentenhuis_routes);
 app.use(maaltijd_routes);
 app.use(deelnemers_routes);
-
 
 //super endpoint methode die je doorstuurt naar de error handler
 app.use('*', function(req, res, next){
@@ -51,3 +54,5 @@ app.use((err, req, res, next) => {
     //give status
     res.status(404).json(err).end();
 });
+
+module.exports = app;
