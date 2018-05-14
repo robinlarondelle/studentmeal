@@ -1,0 +1,8 @@
+{
+    "secretkey":  "QNwlq8kdEFA2s5RZ9BGyDAh5Wk00RS4n",
+    "dbUsername" : "username",
+    "dbPassword": "",
+    "dbSchema" :  "database_schema",
+    "dbServer" :  "localhost",
+    "webPort" :   "3000"
+}
