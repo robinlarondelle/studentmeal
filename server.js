@@ -10,6 +10,7 @@
 //imports
 const express = require('express');
 const bodyParser = require('body-parser');
+const error = require('./classes/error');
 
 let app = express();
 
@@ -45,14 +46,18 @@ app.listen(port, function(){
 
 //Error handler
 app.use((err, req, res, next) => {
-
     //Log
     console.log('The catch-all error handler was called');
-    console.log("Error: " + err + 
-    "\r\n- - - - - - - - - - - - - \r\n");
+    console.log("Error: " + err);
+
+    if (err.code){
+         status = err.code;
+    } else {
+        status = 404;
+    }
 
     //give status
-    res.status(404).json(err).end();
+    res.status(status).json(err).end();
 });
 
 module.exports = app;
