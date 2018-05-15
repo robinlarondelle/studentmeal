@@ -58,3 +58,5 @@ app.use((error, request, response, next) => {
     //give status
     response.status(404).json(error).end();
 });
+
+module.exports = app;
