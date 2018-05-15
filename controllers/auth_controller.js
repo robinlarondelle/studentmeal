@@ -47,14 +47,55 @@ module.exports = {
         })
     },
 
+
     //Login functie
     login: function (request, response) {
 
+        //Haal de gegevens uit de body op
         const email = request.body.email;
         const password = request.body.password;
 
         console.log("received: " + email + ", " + password);
+
+        //Stel een query voor de db samen
+        const query = {
+            sql:"SELECT ID FROM user WHERE email = \'"+email+"\' AND password = \'"+password+"\';",
+            timeout:2000
+        }
+
+        console.log("Executing the following query: \r\n" + JSON.stringify(query)+"\r\n");
+        
+        db.query(query, function(error, rows)    {
+            if(error)   {
+                console.log("An error occured..");              
+            }
+
+            //Als er informatie in de rows zit, dan is er een match en zit de user in de db
+            else if(rows[0])    {                
+                const ID = rows.insertId;
+                const token = auth.encodeToken(ID, email);              
+
+                const json = {
+                    "token" :   token,
+                    "email" :   email
+                }
+
+                response.status(200).json(json);
+            }
+
+            //Als er geen informatie in de database zit dan:
+            else{
+                const json = {
+                    "message"   :   "Er was geen overeenkomst, heb je je al geregistreerd?",
+                    "code"      :   "401",
+                    "datetime"  :   moment()
+                }
+
+                response.status(401).json(json);
+            }
+        })
     },
+
 
     //Register functie
     register: function (request, response) {
