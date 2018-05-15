@@ -8,10 +8,18 @@
 
 //imports
 const express = require('express');
+<<<<<<< HEAD
 const expressJWT = require('express-jwt');
 const app = express();
 const auth = require("./auth/authentication")
 const bodyParser = require("body-parser")
+=======
+const bodyParser = require('body-parser');
+
+let app = express();
+
+app.use(bodyParser.json());
+>>>>>>> Studentenhuis-Endpoints
 
 const studentenhuis_routes = require('./routes/studentenhuis_routes');
 const maaltijd_routes = require('./routes/maaltijd_routes');
@@ -56,5 +64,12 @@ app.use((error, request, response, next) => {
     "\r\n- - - - - - - - - - - - - \r\n");
 
     //give status
+<<<<<<< HEAD
     response.status(404).json(error).end();
 });
+=======
+    res.status(404).json(err).end();
+});
+
+module.exports = app;
+>>>>>>> Studentenhuis-Endpoints
