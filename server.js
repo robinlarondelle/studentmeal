@@ -8,10 +8,15 @@
 
 //imports
 const express = require('express');
+<<<<<<< HEAD
 const expressJWT = require('express-jwt');
 const app = express();
 const auth = require("./auth/authentication")
 const bodyParser = require("body-parser")
+=======
+const bodyParser = require('body-parser');
+const error = require('./classes/error');
+>>>>>>> Studentenhuis-Endpoints
 
 const studentenhuis_routes = require('./routes/studentenhuis_routes');
 const maaltijd_routes = require('./routes/maaltijd_routes');
@@ -48,6 +53,7 @@ app.listen(port, function(){
 });
 
 //Error handler
+<<<<<<< HEAD
 app.use((error, request, response, next) => {
 
     //Log
@@ -57,6 +63,21 @@ app.use((error, request, response, next) => {
 
     //give status
     response.status(404).json(error).end();
+=======
+app.use((err, req, res, next) => {
+    //Log
+    console.log('The catch-all error handler was called');
+    console.log("Error: " + err);
+
+    if (err.code){
+         status = err.code;
+    } else {
+        status = 404;
+    }
+
+    //give status
+    res.status(status).json(err).end();
+>>>>>>> Studentenhuis-Endpoints
 });
 
 module.exports = app;

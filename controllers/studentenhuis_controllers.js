@@ -1,5 +1,8 @@
 let express = require('express');
 let db = require('../config/database');
+let studentenhuis = require('../classes/studentenhuis');
+let assert = require('assert');
+let error = require('../classes/error');
 
 /*STUDENTENHUIS TO-DO
 ID vervangen door de informatie uit de payload bij putStudentenhuis
@@ -9,40 +12,46 @@ Tests toevoegen
  */
 
 module.exports = {
-    createStudentenhuis(req, res, next){
-        console.log('createStudentenhuis was called, naam=' + req.body.naam + ', adres=' + req.body.adres);
-        //Bouwt query op
-        let query = {
-            sql : 'INSERT INTO `studentenhuis` (`Adres`, `Naam`, `UserID`) VALUES (\'' + req.body.adres + '\', \'' + req.body.naam + '\', \'' + req.body.id + '\');',
-            timeout : 2000
-        };
+     createStudentenhuis(req, res, next){
+         let huis = new studentenhuis(req.body.naam, req.body.adres, '1', next, function(error){
+         if (error){
+             res.status(422).end();
+         } else {
+             console.log('createStudentenhuis was called, naam=' + huis.naam + ', adres=' + huis.adres);
 
-        //Voert query uit
-        db.query(query, function(error, rows){
-            if(error) {
-                //Als de database een error gooit doe je dit
-                res.status(400).json(error);
-            } else {
-                let id = rows.insertId;
+             //Bouwt query op
+             let query = {
+                 sql: 'INSERT INTO `studentenhuis` (`Adres`, `Naam`, `UserID`) VALUES (\'' + huis.adres + '\', \'' + huis.naam + '\', \'' + huis.userId + '\');',
+                 timeout: 2000
+             };
 
-                //Bouwt query op
-                let query = {
-                    sql: 'SELECT studentenhuis.ID, studentenhuis.Naam, studentenhuis.Adres, CONCAT(user.Voornaam, \' \', user.Achternaam) AS Contact, user.Email FROM `studentenhuis` JOIN user ON user.ID = studentenhuis.UserID WHERE studentenhuis.ID = ' + id,
-                    timeout : 2000
-                };
+             //Voert query uit
+             db.query(query, function (error, rows) {
+                 if (error) {
+                     //Als de database een error gooit doe je dit
+                     res.status(400).json(error);
+                 } else {
+                     let id = rows.insertId;
 
-                //Voert query uit
-                db.query(query, function(error, rows){
-                    if(error) {
-                        //Als de database een error gooit doe je dit
-                        res.status(400).json(error);
-                    } else {
-                        //Alle resultaten van de query terugsturen
-                        res.status(200).json(rows[0]);
-                    }
-                });
-            }
-        });
+                     //Bouwt query op
+                     let query = {
+                         sql: 'SELECT studentenhuis.ID, studentenhuis.Naam, studentenhuis.Adres, CONCAT(user.Voornaam, \' \', user.Achternaam) AS Contact, user.Email FROM `studentenhuis` JOIN user ON user.ID = studentenhuis.UserID WHERE studentenhuis.ID = ' + id,
+                         timeout: 2000
+                     };
+
+                     //Voert query uit
+                     db.query(query, function (error, rows) {
+                         if (error) {
+                             //Als de database een error gooit doe je dit
+                             res.status(400).json(error);
+                         } else {
+                             //Alle resultaten van de query terugsturen
+                             res.status(200).json(rows[0]);
+                         }
+                     });
+                 }
+             });
+         }});
     },
     getStudentenhuis(req, res, next){
         console.log('getStudentenhuis was called');
@@ -65,28 +74,41 @@ module.exports = {
     },
     getStudentenhuisById(req, res, next){
         console.log('getStudentenhuis was called. huisId= ' + req.params.huisId);
-        //Bouwt query op
-        let query = {
-            sql : 'SELECT studentenhuis.ID, studentenhuis.Naam, studentenhuis.Adres, CONCAT(user.Voornaam, \' \', user.Achternaam) AS Contact, user.Email FROM `studentenhuis` JOIN user ON user.ID = studentenhuis.UserID WHERE studentenhuis.ID = 1',
-            timeout : 2000
-        };
+        //Validate huisId value
+        try {
+            assert(isNaN(req.params.huisId) === false, 'huisId moet een nummer zijn');
+            assert(req.params.huisId.indexOf('-') === -1, 'huisId kan niet negatief zijn');
+            assert(req.params.huisId.indexOf('.') === -1, 'huisId kan geen decimaal getal zijn');
+        } catch (e){
+            const ApiError = new error(e.toString(), 412);
+            next(ApiError);
+            return
+        }
 
-        //Voert query uit
-        db.query(query, function(error, rows){
-            if(error) {
-                //Als de database een error gooit doe je dit
-                res.status(400).json(error);
-            } else {
-                //Alle resultaten van de query terugsturen
-                res.status(200).json(rows);
-            }
-        });
+            //Bouwt query op
+            let query = {
+                sql : 'SELECT studentenhuis.ID, studentenhuis.Naam, studentenhuis.Adres, CONCAT(user.Voornaam, \' \', user.Achternaam) AS Contact, user.Email FROM `studentenhuis` JOIN user ON user.ID = studentenhuis.UserID WHERE studentenhuis.ID = ' + req.params.huisId,
+                timeout : 2000
+            };
+
+            //Voert query uit
+            db.query(query, function(error, rows){
+                if(error) {
+                    //Als de database een error gooit doe je dit
+                    res.status(400).json(error);
+                } else {
+                    //Alle resultaten van de query terugsturen
+                    res.status(200).json(rows[0]);
+                }
+            });
     },
     putStudentenhuis(req, res, next){
-        console.log('putStudentenhuis was called. huisId= ' + req.params.huisId + 'naam=' + req.body.naam + ', adres=' +req.body.adres);
+        console.log('putStudentenhuis was called. huisId= ' + req.params.huisId + 'naam=' + req.body.naam + ', adres=' + req.body.adres);
+
+        let studentenhuis = new studentenhuis('1', req.body.naam, req.body.adres);
         //Bouwt query op
         let query = {
-            sql : 'UPDATE studentenhuis SET studentenhuis.Naam = \'' + req.body.naam + '\', studentenhuis.Adres = \'' + req.body.adres + '\' WHERE studentenhuis.ID = \'' + req.params.huisId + '\' AND studentenhuis.UserID = \'1\'',
+            sql : 'UPDATE studentenhuis SET studentenhuis.Naam = \'' + studentenhuis.naam + '\', studentenhuis.Adres = \'' + studentenhuis.adres + '\' WHERE studentenhuis.ID = \'' + req.params.huisId + '\' AND studentenhuis.UserID = ' + studentenhuis.userId,
             timeout : 2000
         };
 
