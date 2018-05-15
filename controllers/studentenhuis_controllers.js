@@ -6,18 +6,16 @@ let error = require('../classes/error');
 
 /*STUDENTENHUIS TO-DO
 ID vervangen door de informatie uit de payload bij putStudentenhuis
-Asserts toevoegen voor stabiliteit
-Errors veranderen dmv eigen error klasse
 Tests toevoegen
  */
 
 module.exports = {
      createStudentenhuis(req, res, next){
+         console.log('createStudentenhuis was called, naam=' + req.body.naam + ', adres=' + req.body.adres);
          let huis = new studentenhuis(req.body.naam, req.body.adres, '1', next, function(error){
          if (error){
-             res.status(422).end();
+             res.status(412).end();
          } else {
-             console.log('createStudentenhuis was called, naam=' + huis.naam + ', adres=' + huis.adres);
 
              //Bouwt query op
              let query = {
@@ -104,23 +102,13 @@ module.exports = {
     },
     putStudentenhuis(req, res, next){
         console.log('putStudentenhuis was called. huisId= ' + req.params.huisId + 'naam=' + req.body.naam + ', adres=' + req.body.adres);
-
-        let studentenhuis = new studentenhuis('1', req.body.naam, req.body.adres);
-        //Bouwt query op
-        let query = {
-            sql : 'UPDATE studentenhuis SET studentenhuis.Naam = \'' + studentenhuis.naam + '\', studentenhuis.Adres = \'' + studentenhuis.adres + '\' WHERE studentenhuis.ID = \'' + req.params.huisId + '\' AND studentenhuis.UserID = ' + studentenhuis.userId,
-            timeout : 2000
-        };
-
-        //Voert query uit
-        db.query(query, function(error, rows){
-            if(error) {
-                //Als de database een error gooit doe je dit
-                res.status(400).json(error);
+        let huis = new studentenhuis('1', req.body.naam, req.body.adres, req.params.huisId, function(error){
+            if(error){
+                res.status(412).end();
             } else {
                 //Bouwt query op
                 let query = {
-                    sql: 'SELECT studentenhuis.ID, studentenhuis.Naam, studentenhuis.Adres, CONCAT(user.Voornaam, \' \', user.Achternaam) AS Contact, user.Email FROM `studentenhuis` JOIN user ON user.ID = studentenhuis.UserID WHERE studentenhuis.ID = ' + req.params.huisId,
+                    sql : 'UPDATE studentenhuis SET studentenhuis.Naam = \'' + huis.naam + '\', studentenhuis.Adres = \'' + huis.adres + '\' WHERE studentenhuis.ID = \'' + huis.huisId + '\' AND studentenhuis.UserID = ' + studentenhuis.userId,
                     timeout : 2000
                 };
 
@@ -130,8 +118,22 @@ module.exports = {
                         //Als de database een error gooit doe je dit
                         res.status(400).json(error);
                     } else {
-                        //Alle resultaten van de query terugsturen
-                        res.status(200).json(rows[0]);
+                        //Bouwt query op
+                        let query = {
+                            sql: 'SELECT studentenhuis.ID, studentenhuis.Naam, studentenhuis.Adres, CONCAT(user.Voornaam, \' \', user.Achternaam) AS Contact, user.Email FROM `studentenhuis` JOIN user ON user.ID = studentenhuis.UserID WHERE studentenhuis.ID = ' + req.params.huisId,
+                            timeout : 2000
+                        };
+
+                        //Voert query uit
+                        db.query(query, function(error, rows){
+                            if(error) {
+                                //Als de database een error gooit doe je dit
+                                res.status(400).json(error);
+                            } else {
+                                //Alle resultaten van de query terugsturen
+                                res.status(200).json(rows[0]);
+                            }
+                        });
                     }
                 });
             }
@@ -139,6 +141,16 @@ module.exports = {
     },
     deleteStudentenhuis(req, res, next){
         console.log('deleteStudentenhuis was called. huisId= ' + req.params.huisId);
+        try {
+            assert(isNaN(req.params.huisId) === false, 'huisId moet een nummer zijn');
+            assert(req.params.huisId.indexOf('-') === -1, 'huisId kan niet negatief zijn');
+            assert(req.params.huisId.indexOf('.') === -1, 'huisId kan geen decimaal getal zijn');
+        } catch (e){
+            const ApiError = new error(e.toString(), 412);
+            next(ApiError);
+            return
+        }
+
         //Bouwt query op
         let query = {
             sql : 'DELETE FROM studentenhuis WHERE studentenhuis.ID = ' + req.params.huisId,
