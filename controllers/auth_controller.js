@@ -1,4 +1,5 @@
 const auth = require('../auth/authentication');
+const moment = require("moment");
 
 module.exports = {
 
@@ -45,19 +46,43 @@ module.exports = {
     register: function (request, response) {
 
         //Alle gegevens uit de body halen
-        var firstname = request.body.firstname  || "test-firstname";
-        var lastname = request.body.lastname    || "test-lastname";
-        var email = request.body.email          || "test-email";
-        var password = request.body.password    || "test-password";
+        var firstname = request.body.firstname  || "";
+        var lastname = request.body.lastname    || "";
+        var email = request.body.email          || "";
+        var password = request.body.password    || "";
 
-        //Maak hier een token en een json van voor de response
-        const token = auth.encodeToken(firstname, email);
-        const json = {
-            "token": token,
-            "email": email
+        //Als een van de velden niet leeg is dan:
+        if(!([firstname, lastname, email, password].includes(''))) {
+            //Maak hier een token en een json van voor de response
+            const token = auth.encodeToken(firstname, email);
+            const json = {
+                "token": token,
+                "email": email
+            }
+            
+            //response
+            response.status(200).json(json);
         }
-        
-        //response
-        response.status(200).json(json);
+
+        else if(/*gegevens al bestaan*/ false)    {
+            const json = {
+                "message": "Niet geautoriseerd (geen valid token)",
+                "code": 401,
+                "datetime": moment()
+            }
+
+            response.status(401).json(json);
+        }
+
+        //Anders, dan:
+        else{
+            const json = {
+                "message": "Een of meer properties in de request body ontbreken of zijn foutief",
+                "code": 412,
+                "datetime": moment()
+            }
+
+            response.status(414).json(json);
+        }
     },
 }
