@@ -1,6 +1,7 @@
 const auth = require('../auth/authentication');
 const moment = require("moment");
 const db = require('../config/database');
+const ApiError = require("../classes/error")
 
 module.exports = {
 
@@ -116,13 +117,13 @@ module.exports = {
                 "\r\n- - - - - - - - - - - - - - - - \r\n");
 
             const json = {
-                "message": "Niet geautoriseerd (geen valid token)",
-                "code": 401,
+                "message": "Een of meer properties in de request body ontbreken of zijn foutief",
+                "code": 412,
                 "datetime": moment()
             }
 
             //response
-            response.status(401).json(json);
+            response.status(412).json(json);
         }
 
 
@@ -139,7 +140,7 @@ module.exports = {
             if (error) {
                 console.log("An error occured: " + error);
                 response.status(401).json(error);
-
+                return;
             }
 
             console.log("\r\nGot the following rows: \r\n" + JSON.stringify(rows));
@@ -150,7 +151,11 @@ module.exports = {
                 console.log("The database already contained the given email.");
                 console.log("Error: \r\n");
                 //Vul error in hier
-                response.status(412).json(error);
+
+                const databaseError = new ApiError("u bent al geregistreerd", 412);
+
+                response.status(412).json(databaseError);
+                return;
             }
 
             //zo niet dan wordt een nieuw persoon aangemaakt in de database
