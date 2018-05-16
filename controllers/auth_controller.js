@@ -24,6 +24,7 @@ module.exports = {
             }
 
             response.status(401).json(json);
+            return
         }
 
         //Decodeer token
