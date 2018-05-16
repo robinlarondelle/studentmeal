@@ -57,11 +57,13 @@ module.exports = {
 
             //token assert
             assert(typeof (token) === "string", "Token must be a string");
-            assert(token.includes('') === false, "Token may not be empty");
+            assert(token === undefined === false, "Token may not be empty");
 
         } catch(e)  {
 
             //Error handler
+            console.log("error2");
+            
             const ApiError = new error(e.toString(), 422);
             next(ApiError);
             return;

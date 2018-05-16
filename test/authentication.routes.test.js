@@ -69,6 +69,7 @@ describe('Registration', () => {
         // module.exports = {
         //     token: validToken
         // }
+        
         chai.request(server)
         .post("/api/login")
         .send(loginCredentials)
@@ -77,8 +78,14 @@ describe('Registration', () => {
             res.body.should.have.property("token")
             expect(res.body.token).to.be.a("string");
             validToken = res.body.token;            
-        })      
+                       
+        })
 
+        module.exports = {
+            validToken
+        }
+         
+        
         done()
     })
 
@@ -86,9 +93,8 @@ describe('Registration', () => {
 
         chai.request(server)
         .get("/api/login")
-        .set("x-access-token", validToken)
         .end((err, res) =>  {
-            res.should.have.status(404);
+            res.should.have.status(401);
             res.body.should.have.property("message");
             res.body.should.have.property("code");
             res.body.should.have.property("datetime");
@@ -281,6 +287,3 @@ describe('Login', () => {
     })
 })
 
-module.exports = {
-    validToken
-}
