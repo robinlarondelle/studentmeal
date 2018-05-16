@@ -51,7 +51,7 @@ module.exports = {
 
                             //Bouwt query op
                             let query = {
-                                sql: 'SELECT maaltijd.ID, maaltijd.Beschrijving, maaltijd.Ingredienten, maaltijd.Allergie, maaltijd.Prijs FROM maaltijd WHERE maaltijd.ID = ' + id,
+                                sql: 'SELECT maaltijd.ID, maaltijd.Naam, maaltijd.Beschrijving, maaltijd.Ingredienten, maaltijd.Allergie, maaltijd.Prijs FROM maaltijd WHERE maaltijd.ID = ' + id,
                                 timeout: 2000
                             };
 
@@ -282,7 +282,7 @@ module.exports = {
                                                 } else {
                                                     //Bouwt query op
                                                     let query = {
-                                                        sql: 'SELECT maaltijd.ID, maaltijd.Beschrijving, maaltijd.Ingredienten, maaltijd.Allergie, maaltijd.Prijs FROM maaltijd WHERE maaltijd.ID = ' + req.params.maaltijdId,
+                                                        sql: 'SELECT maaltijd.ID, maaltijd.Beschrijving, maaltijd.Naam, maaltijd.Ingredienten, maaltijd.Allergie, maaltijd.Prijs FROM maaltijd WHERE maaltijd.ID = ' + req.params.maaltijdId,
                                                         timeout: 2000
                                                     };
 

@@ -4,7 +4,7 @@
   "description": "In opdracht van Avans Hoogeschool, uitgevoerd door Robin la Rondelle en Sjoerd Schepers",
   "main": "server.js",
   "scripts": {
-    "test": "mocha ./test/authentication.routes.test.js",
+    "test": "mocha",
     "start": "node server.js"
   },
   "author": "Robin la Rondelle, Sjoerd Schepers",
