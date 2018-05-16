@@ -9,7 +9,12 @@ const auth = require('../auth/authentication');
 chai.should();
 chai.use(chaiHttp);
 
+let token = auth.encodeToken(1, 'meeltje@mail.com');
+console.log('TOKEN:' +  token);
+
 describe('Deelnemer API POST', () => {
+
+
     // it('should throw an error when using invalid JWT token', (done) => {
     //     //
     //     // Hier schrijf je jouw testcase.
@@ -21,6 +26,7 @@ describe('Deelnemer API POST', () => {
         chai.request(server)
             .post("/api/studentenhuis/100000000/maaltijd/1/deelnemers")
             .send()
+            .set('authorization', token)
             .end((err, res) =>  {
                 res.should.have.status(404);
                 res.body.should.have.property("message");
@@ -34,6 +40,7 @@ describe('Deelnemer API POST', () => {
         chai.request(server)
             .post("/api/studentenhuis/1/maaltijd/1000000/deelnemers")
             .send()
+            .set('authorization', token)
             .end((err, res) =>  {
                 res.body.should.have.property("message");
                 res.body.should.have.property("code");
@@ -48,6 +55,7 @@ describe('Deelnemer API GET', () => {
         chai.request(server)
             .get("/api/studentenhuis/1/maaltijd/1/deelnemers")
             .send()
+            .set('authorization', token)
             .end((err, res) =>  {
                 res.should.have.status(200);
             });
@@ -58,6 +66,7 @@ describe('Deelnemer API GET', () => {
         chai.request(server)
             .get("/api/studentenhuis/1000000/maaltijd/1/deelnemers")
             .send()
+            .set('authorization', token)
             .end((err, res) =>  {
                 res.should.have.status(404);
                 res.body.should.have.property("message");
@@ -71,6 +80,7 @@ describe('Deelnemer API GET', () => {
         chai.request(server)
             .get("/api/studentenhuis/1/maaltijd/10000000/deelnemers")
             .send()
+            .set('authorization', token)
             .end((err, res) =>  {
                 res.should.have.status(404);
                 res.body.should.have.property("message");
@@ -84,11 +94,10 @@ describe('Deelnemer API GET', () => {
         chai.request(server)
             .get("/api/studentenhuis/1/maaltijd/-1/deelnemers")
             .send()
+            .set('authorization', token)
             .end((err, res) =>  {
-                res.should.have.status(412);
-                res.body.should.have.property("message");
-                res.body.should.have.property("code");
-                res.body.should.have.property("datetime");
+                res.should.have.status(404);
+               ;
             });
         done()
     });
@@ -97,11 +106,9 @@ describe('Deelnemer API GET', () => {
         chai.request(server)
             .get("/api/studentenhuis/-1/maaltijd/1/deelnemers")
             .send()
+            .set('authorization', token)
             .end((err, res) =>  {
-                res.should.have.status(412);
-                res.body.should.have.property("message");
-                res.body.should.have.property("code");
-                res.body.should.have.property("datetime");
+                res.should.have.status(404);
             });
         done()
     });
@@ -110,11 +117,9 @@ describe('Deelnemer API GET', () => {
         chai.request(server)
             .get("/api/studentenhuis/0.1/maaltijd/1/deelnemers")
             .send()
+            .set('authorization', token)
             .end((err, res) =>  {
-                res.should.have.status(412);
-                res.body.should.have.property("message");
-                res.body.should.have.property("code");
-                res.body.should.have.property("datetime");
+                res.should.have.status(404);
             });
         done()
     });
@@ -123,11 +128,9 @@ describe('Deelnemer API GET', () => {
         chai.request(server)
             .get("/api/studentenhuis/1/maaltijd/0.1/deelnemers")
             .send()
+            .set('authorization', token)
             .end((err, res) =>  {
-                res.should.have.status(412);
-                res.body.should.have.property("message");
-                res.body.should.have.property("code");
-                res.body.should.have.property("datetime");
+                res.should.have.status(404);
             });
         done()
     });
@@ -138,11 +141,9 @@ describe('Maaltijd API DELETE', () => {
         chai.request(server)
             .delete("/api/studentenhuis/10000000000/maaltijd/30/deelnemers")
             .send()
+            .set('authorization', token)
             .end((err, res) =>  {
                 res.should.have.status(404);
-                res.body.should.have.property("message");
-                res.body.should.have.property("code");
-                res.body.should.have.property("datetime");
             });
         done()
     });
@@ -151,11 +152,9 @@ describe('Maaltijd API DELETE', () => {
         chai.request(server)
             .delete("/api/studentenhuis/1/maaltijd/1000000000000/deelnemers")
             .send()
+            .set('authorization', token)
             .end((err, res) =>  {
                 res.should.have.status(404);
-                res.body.should.have.property("message");
-                res.body.should.have.property("code");
-                res.body.should.have.property("datetime");
             });
         done()
     });
@@ -164,11 +163,9 @@ describe('Maaltijd API DELETE', () => {
         chai.request(server)
             .delete("/api/studentenhuis/-1/maaltijd/20/deelnemers")
             .send()
+            .set('authorization', token)
             .end((err, res) =>  {
-                res.should.have.status(412);
-                res.body.should.have.property("message");
-                res.body.should.have.property("code");
-                res.body.should.have.property("datetime");
+                res.should.have.status(404);
             });
         done()
     });
