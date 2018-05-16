@@ -28,7 +28,7 @@ app.use(bodyParser.json());
 //Laat de app gebruik maken van deze routes
 app.use('/api', auth_routes);
 
-//app.all("*", auth_controller.validateToken);
+app.all("*", auth_controller.validateToken);
 
 app.use(studentenhuis_routes);
 app.use(maaltijd_routes);
@@ -37,10 +37,15 @@ app.use(deelnemers_routes);
 //super endpoint methode die je doorstuurt naar de error handler
 app.use('*', function(request, response, next){
     console.log('The super endpoint was called');
-    let message = {
-        'error: ' : 'deze endpoint bestaat niet'
-    };
-    next(message);
+    let err = new error("Deze endpoint bestaat niet", 404)
+    next(err);
+});
+
+//super endpoint methode die je doorstuurt naar de error handler
+app.use('*', function(request, response, next){
+    console.log('The super endpoint was called');
+    let err = new error("Deze endpoint bestaat niet", 404)
+    next(err);
 });
 
 //Zeg de server naar welke port hij moet luisteren

@@ -96,7 +96,7 @@ describe('Deelnemer API GET', () => {
             .send()
             .set('authorization', token)
             .end((err, res) =>  {
-                res.should.have.status(404);
+                res.should.have.status(412);
                ;
             });
         done()
@@ -108,7 +108,7 @@ describe('Deelnemer API GET', () => {
             .send()
             .set('authorization', token)
             .end((err, res) =>  {
-                res.should.have.status(404);
+                res.should.have.status(412);
             });
         done()
     });
@@ -119,7 +119,7 @@ describe('Deelnemer API GET', () => {
             .send()
             .set('authorization', token)
             .end((err, res) =>  {
-                res.should.have.status(404);
+                res.should.have.status(412);
             });
         done()
     });
@@ -130,7 +130,7 @@ describe('Deelnemer API GET', () => {
             .send()
             .set('authorization', token)
             .end((err, res) =>  {
-                res.should.have.status(404);
+                res.should.have.status(412);
             });
         done()
     });

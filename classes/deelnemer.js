@@ -10,9 +10,6 @@ class deelnemer {
             assert(isNaN(maaltijdId) === false, 'maaltijdId must be anumber');
             assert(maaltijdId.indexOf('-') === -1, 'maaltijdId can\'t be negative');
             assert(maaltijdId.indexOf('.') === -1, 'maaltijdId can\'t be a decimal');
-            assert(isNaN(userId) === false, 'userId must be anumber');
-            assert(userId.indexOf('-') === -1, 'userId can\'t be negative');
-            assert(userId.indexOf('.') === -1, 'userId can\'t be a decimal');
         } catch (e) {
             const ApiError = new error(e.toString(), 412);
             next(ApiError);

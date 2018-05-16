@@ -13,9 +13,6 @@ class maaltijd {
             assert(isNaN(huisId) === false, 'huisId must be a number');
             assert(huisId.indexOf('-') === -1, 'huisId can\'t be negative');
             assert(huisId.indexOf('.') === -1, 'huisId can\'t be a decimal');
-            assert(isNaN(userId) === false, 'userId must be a number');
-            assert(userId.indexOf('-') === -1, 'userId can\'t be negative');
-            assert(userId.indexOf('.') === -1, 'userId can\'t be a decimal');
         } catch (e) {
             const ApiError = new error(e.toString(), 412);
             next(ApiError);

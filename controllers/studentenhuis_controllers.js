@@ -3,6 +3,7 @@ let db = require('../config/database');
 let studentenhuis = require('../classes/studentenhuis');
 let assert = require('assert');
 let error = require('../classes/error');
+let auth = require('../auth/authentication');
 
 /*STUDENTENHUIS TO-DO
 Tests toevoegen
@@ -255,7 +256,7 @@ module.exports = {
             } else {
                 //Validates wheter the user is the owner or not
                 let isUserOwnerQuery = {
-                    sql: 'SELECT * FROM `studentenhuis` WHERE studentenhuis.UserID = \'' + userId + '\' AND studentenhuis.ID = \'' + req.params.huisId,
+                    sql: 'SELECT * FROM `studentenhuis` WHERE studentenhuis.UserID = \'' + userId + '\' AND studentenhuis.ID = \'' + req.params.huisId + '\'',
                     timeout: 2000
                 };
                 db.query(isUserOwnerQuery, function (err, rows) {
@@ -268,9 +269,11 @@ module.exports = {
                     } else {
                         //Bouwt query op
                         let query = {
-                            sql: 'DELETE FROM studentenhuis WHERE studentenhuis.ID = ' + req.params.huisId,
+                            sql: 'DELETE FROM studentenhuis WHERE studentenhuis.ID = \'' + req.params.huisId + '\' AND studentenhuis.UserID = \'' + userId + '\'',
                             timeout: 2000
                         };
+
+                        console.log(query.sql);
 
                         db.query(query, function (error, rows) {
                             if (error) {

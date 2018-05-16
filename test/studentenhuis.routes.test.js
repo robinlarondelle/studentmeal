@@ -204,6 +204,7 @@ describe('Studentenhuis API PUT', () => {
         chai.request(server)
             .put("/api/studentenhuis/1")
             .send(studentenhuis)
+            .set('authorization', token)
             .end((err, res) =>  {
                 res.should.have.status(412);
                 res.body.should.have.property("message");

@@ -3,6 +3,7 @@ let maaltijd = require('../classes/maaltijd');
 let db = require('../config/database');
 let error = require('../classes/error');
 let assert = require('assert');
+let auth = require('../auth/authentication');
 
 module.exports = {
     createMaaltijd(req, res, next){

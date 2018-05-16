@@ -100,6 +100,7 @@ describe('Maaltijd API POST', () => {
         chai.request(server)
             .post("/api/studentenhuis/1/maaltijd")
             .send(maaltijd)
+            .set('authorization', token)
             .end((err, res) =>  {
                 res.should.have.status(412);
                 res.body.should.have.property("message");
@@ -160,6 +161,7 @@ describe('Maaltijd API POST', () => {
         chai.request(server)
             .post("/api/studentenhuis/100000000/maaltijd")
             .send(maaltijd)
+            .set('authorization', token)
             .end((err, res) =>  {
                 res.should.have.status(404);
                 res.body.should.have.property("message");
