@@ -11,7 +11,7 @@ module.exports = {
         console.log("validating token...");
 
         //Haal token op uit de header
-        const token = request.header("x-access-token") || "";
+        const token = request.header("authorization") || "";
 
         //Als de token leeg is dan moet een 401 error met bericht worden gegeven
         if (token.includes("")) {
