@@ -60,9 +60,9 @@ module.exports = {
                             timeout: 2000
                         };
                         //Voert query uit
-                        db.query(query, function (error, rows) {
-                            if (error) {
-                                if (error.errno === 1062) {
+                        db.query(query, function (err, rows) {
+                            if (err) {
+                                if (err.errno === 1062) {
                                     const ApiError = new error('Dit account is al ingeschreven', 409);
                                     next(ApiError);
                                 } else {

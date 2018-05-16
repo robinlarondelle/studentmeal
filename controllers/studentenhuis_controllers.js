@@ -114,7 +114,7 @@ module.exports = {
     },
     putStudentenhuis(req, res, next){
          let allowed = true;
-         let userId = '2';
+         let userId = '1';
          console.log('putStudentenhuis was called. huisId= ' + req.params.huisId + 'naam=' + req.body.naam + ', adres=' + req.body.adres);
 
         //Validate huisId value
@@ -144,7 +144,7 @@ module.exports = {
             } else {
                 //Validates wheter the user is the owner or not
                 let isUserOwnerQuery = {
-                    sql: 'SELECT * FROM `studentenhuis` WHERE studentenhuis.UserID = \'' + userId + '\' AND studentenhuis.ID = \'' + req.params.huisId,
+                    sql: 'SELECT * FROM `studentenhuis` WHERE studentenhuis.UserID = \'' + userId + '\' AND studentenhuis.ID = \'' + req.params.huisId + '\'',
                     timeout: 2000
                 };
                 db.query(isUserOwnerQuery, function (err, rows) {

@@ -28,7 +28,7 @@ app.use(bodyParser.json());
 //Laat de app gebruik maken van deze routes
 app.use('/api', auth_routes);
 
-app.all("*", auth_controller.validateToken);
+//app.all("*", auth_controller.validateToken);
 
 app.use(studentenhuis_routes);
 app.use(maaltijd_routes);
