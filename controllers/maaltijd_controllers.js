@@ -6,7 +6,16 @@ let assert = require('assert');
 
 module.exports = {
     createMaaltijd(req, res, next){
-        let userId = '1';
+        auth.decodeToken(req.headers['authorization'], (error, payload) => {
+            if(error)   {
+                const noValidTokenError = new ApiError("Not a valid token", 401);
+                response.status(401).json(noValidTokenError);
+            } else {
+                userId = payload.sub;
+            }
+        });
+
+        console.log("userId: " + userId);
         console.log('createMaaltijd was called, huisId=' + req.params.huisId);
 
         try {
@@ -194,7 +203,16 @@ module.exports = {
         });
     },
     putMaaltijd(req, res, next){
-        let userId = '1';
+        auth.decodeToken(req.headers['authorization'], (error, payload) => {
+            if(error)   {
+                const noValidTokenError = new ApiError("Not a valid token", 401);
+                response.status(401).json(noValidTokenError);
+            } else {
+                userId = payload.sub;
+            }
+        });
+
+        console.log("userId: " + userId);
         console.log('putMaaltijd was called, huisId=' + req.params.huisId + ', maaltijdId=' + req.params.maaltijdId);
 
         try {
@@ -311,7 +329,16 @@ module.exports = {
         });
     },
     deleteMaaltijd(req, res, next){
-        let userId = '1';
+        auth.decodeToken(req.headers['authorization'], (error, payload) => {
+            if(error)   {
+                const noValidTokenError = new ApiError("Not a valid token", 401);
+                response.status(401).json(noValidTokenError);
+            } else {
+                userId = payload.sub;
+            }
+        });
+
+        console.log("userId: " + userId);
 
         console.log('putMaaltijd(req, res, next) was called, huisId=' + req.params.huisId + ', maaltijdId=' + req.params.maaltijdId);
         try {

@@ -8,12 +8,25 @@
 //imports
 let express = require('express');
 let db = require('../config/database');
-let error = require('../classes/error');
+let ApiError = require('../classes/error');
 let assert = require('assert');
+let auth = require("../auth/authentication")
+let config = require("../config.json");
+let jwt = require("jwt-simple");
 
 module.exports = {
     createDeelnemer(req, res, next) {
-        let userId = '1';
+        auth.decodeToken(req.headers['authorization'], (error, payload) => {
+            if(error)   {
+                const noValidTokenError = new ApiError("Not a valid token", 401);
+                response.status(401).json(noValidTokenError);
+            } else {
+                userId = payload.sub;
+            }
+        });
+
+        console.log("userId: " + userId);
+
         console.log('createDeelnemer was called, huisId=' + req.params.huisId + ', maaltijdId=' + req.params.maaltijdId);
         try {
             assert(isNaN(req.params.huisId) === false, 'huisId moet een nummer zijn');
@@ -23,7 +36,7 @@ module.exports = {
             assert(req.params.maaltijdId.indexOf('-') === -1, 'maaltijdId can\'t be negative');
             assert(req.params.maaltijdId.indexOf('.') === -1, 'maaltijdId can\'t be a decimal');
         } catch (e) {
-            const ApiError = new error(e.toString(), 412);
+            const ApiError = new ApiError(e.toString(), 412);
             next(ApiError);
             return
         }
@@ -38,8 +51,14 @@ module.exports = {
                 res.status(400).json(err);
             } else if (rows[0] === undefined) {
                 console.log('huisId does not exist');
-                const ApiError = new error('huisId does not exist', 404);
+<<<<<<< HEAD
+                const err = new ApiError('huisId does not exist', 404);
+                next(err);
+
+=======
+                const ApiError = new ApiError('huisId does not exist', 404);
                 next(ApiError);
+>>>>>>> parent of 20bb1b3... Fixed deelnemer controller and test
             } else {
                 //Validates wheter maaltijdId exists or not
                 let doesMaaltijdIdExistQuery = {
@@ -51,7 +70,7 @@ module.exports = {
                         res.status(400).json(err);
                     } else if (rows[0] === undefined) {
                         console.log('maaltijdId does not exist');
-                        const ApiError = new error('maaltijdId does not exist', 404);
+                        const ApiError = new ApiError('maaltijdId does not exist', 404);
                         next(ApiError);
                     } else {
                         //Bouwt query op
@@ -63,11 +82,11 @@ module.exports = {
                         db.query(query, function (err, rows) {
                             if (err) {
                                 if (err.errno === 1062) {
-                                    const ApiError = new error('Dit account is al ingeschreven', 409);
-                                    next(ApiError);
+                                    const err = new ApiError('Dit account is al ingeschreven', 409);
+                                    next(err);
                                 } else {
                                 //Als de database een error gooit doe je dit
-                                res.status(400).json(error);
+                                res.status(400).json(ApiError);
                                 }
                             } else {
                                 let id = rows.insertId;
@@ -105,8 +124,8 @@ module.exports = {
             assert(req.params.maaltijdId.indexOf('-') === -1, 'maaltijdId can\'t be negative');
             assert(req.params.maaltijdId.indexOf('.') === -1, 'maaltijdId can\'t be a decimal');
         } catch (e) {
-            const ApiError = new error(e.toString(), 412);
-            next(ApiError);
+            const deelnemerError = new ApiError(e.toString(), 412);
+            next(deelnemerError);
             return
         }
 
@@ -120,7 +139,7 @@ module.exports = {
                 res.status(400).json(err);
             } else if (rows[0] === undefined) {
                 console.log('huisId does not exist');
-                const ApiError = new error('huisId does not exist', 404);
+                const ApiError = new ApiError('huisId does not exist', 404);
                 next(ApiError);
             } else {
                 //Validates wheter maaltijdId exists or not
@@ -133,7 +152,7 @@ module.exports = {
                         res.status(400).json(err);
                     } else if (rows[0] === undefined) {
                         console.log('maaltijdId does not exist');
-                        const ApiError = new error('maaltijdId does not exist', 404);
+                        const ApiError = new ApiError('maaltijdId does not exist', 404);
                         next(ApiError);
                     } else {
                         //Validates wheter the combination maaltijdId/deelnemerId exists or not
@@ -146,7 +165,7 @@ module.exports = {
                                 res.status(400).json(err);
                             } else if (rows[0] === undefined) {
                                 console.log('Combination maaltijdId/deelnemerId does not exist');
-                                const ApiError = new error('Combination maaltijdId/deelnemerId does not exist', 404);
+                                const ApiError = new ApiError('Combination maaltijdId/deelnemerId does not exist', 404);
                                 next(ApiError);
                             } else {
                                 //Bouwt query op
@@ -173,7 +192,16 @@ module.exports = {
         });
     },
     deleteDeelnemer(req, res, next){
-        let userId = '1';
+        auth.decodeToken(req.headers['authorization'], (error, payload) => {
+            if(error)   {
+                const noValidTokenError = new ApiError("Not a valid token", 401);
+                response.status(401).json(noValidTokenError);
+            } else {
+                userId = payload.sub;
+            }
+        });
+
+        console.log("userId: " + userId);
 
         console.log('deleteDeelnemer was called. huisId= ' + req.params.huisId + ', maaltijdId=' + req.params.maaltijdId);
         try {
@@ -184,7 +212,7 @@ module.exports = {
             assert(req.params.maaltijdId.indexOf('-') === -1, 'maaltijdId can\'t be negative');
             assert(req.params.maaltijdId.indexOf('.') === -1, 'maaltijdId can\'t be a decimal');
         } catch (e) {
-            const ApiError = new error(e.toString(), 412);
+            const ApiError = new ApiError(e.toString(), 412);
             next(ApiError);
             return
         }
@@ -199,7 +227,7 @@ module.exports = {
                 res.status(400).json(err);
             } else if (rows[0] === undefined){
                 console.log('huisId does not exist');
-                const ApiError = new error('huisId does not exist', 404);
+                const ApiError = new ApiError('huisId does not exist', 404);
                 next(ApiError);
             } else {
                 //Validates wheter maaltijdId exists or not
@@ -212,7 +240,7 @@ module.exports = {
                         res.status(400).json(err);
                     } else if (rows[0] === undefined) {
                         console.log('maaltijdId does not exist');
-                        const ApiError = new error('maaltijdId does not exist', 404);
+                        const ApiError = new ApiError('maaltijdId does not exist', 404);
                         next(ApiError);
                     } else {
                         //Validates wheter the combination maaltijdId/deelnemerId exists or not
@@ -225,7 +253,7 @@ module.exports = {
                                 res.status(400).json(err);
                             } else if (rows[0] === undefined) {
                                 console.log('Combination maaltijdId/deelnemerId does not exist');
-                                const ApiError = new error('Combination maaltijdId/deelnemerId does not exist', 404);
+                                const ApiError = new ApiError('Combination maaltijdId/deelnemerId does not exist', 404);
                                 next(ApiError);
                             } else {
                                 //Validates wheter the user is the owner or not
@@ -238,7 +266,7 @@ module.exports = {
                                         res.status(400).json(err);
                                     } else if (rows[0] === undefined){
                                         console.log('User is not the owner');
-                                        const ApiError = new error('Only the owner can change studentenhuizen', 401);
+                                        const ApiError = new ApiError('Only the owner can change studentenhuizen', 401);
                                         next(ApiError);
                                     } else {
                                         //Bouwt query op

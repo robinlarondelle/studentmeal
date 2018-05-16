@@ -10,7 +10,16 @@ Tests toevoegen
 
 module.exports = {
      createStudentenhuis(req, res, next){
-         let userId = '1';
+        auth.decodeToken(req.headers['authorization'], (error, payload) => {
+            if(error)   {
+                const noValidTokenError = new ApiError("Not a valid token", 401);
+                response.status(401).json(noValidTokenError);
+            } else {
+                userId = payload.sub;
+            }
+        });
+
+        console.log("userId: " + userId);
 
          console.log('createStudentenhuis was called, naam=' + req.body.naam + ', adres=' + req.body.adres);
          let huis = new studentenhuis(req.body.naam, req.body.adres, userId, next);
@@ -114,7 +123,16 @@ module.exports = {
     },
     putStudentenhuis(req, res, next){
          let allowed = true;
-         let userId = '1';
+         auth.decodeToken(req.headers['authorization'], (error, payload) => {
+            if(error)   {
+                const noValidTokenError = new ApiError("Not a valid token", 401);
+                response.status(401).json(noValidTokenError);
+            } else {
+                userId = payload.sub;
+            }
+        });
+
+        console.log("userId: " + userId);
          console.log('putStudentenhuis was called. huisId= ' + req.params.huisId + 'naam=' + req.body.naam + ', adres=' + req.body.adres);
 
         //Validate huisId value
@@ -200,7 +218,16 @@ module.exports = {
         });
     },
     deleteStudentenhuis(req, res, next){
-         let userId = '1';
+        auth.decodeToken(req.headers['authorization'], (error, payload) => {
+            if(error)   {
+                const noValidTokenError = new ApiError("Not a valid token", 401);
+                response.status(401).json(noValidTokenError);
+            } else {
+                userId = payload.sub;
+            }
+        });
+
+        console.log("userId: " + userId);
 
         console.log('deleteStudentenhuis was called. huisId= ' + req.params.huisId);
         try {
