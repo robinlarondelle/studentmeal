@@ -16,28 +16,19 @@ let jwt = require("jwt-simple");
 
 module.exports = {
     createDeelnemer(req, res, next) {
-
-        // let userId;
-        // auth.decodeToken(req.headers['authorization'], (error, payload) => {
-        //     if(error)   {
-        //         const noValidTokenError = new ApiError("Not a valid token", 401);
-        //         response.status(401).json(noValidTokenError);
-        //     } else {
-        //         console.log("token was valid");
-        //         userId = payload.sub;
-        //     }
-        // })
-
-        console.log("creating a deelnemer");
-        
-
+        auth.decodeToken(req.headers['authorization'], (error, payload) => {
+            if(error)   {
+                const noValidTokenError = new ApiError("Not a valid token", 401);
+                response.status(401).json(noValidTokenError);
+            } else {
+                userId = payload.sub;
+            }
+        });
         let token = req.headers['authorization'];
         let payload = jwt.decode(token, config.secretkey);
-        let userId = payload.sub;
 
-        console.log("token: " + token);
         console.log("userId: " + userId);
-    
+
         console.log('createDeelnemer was called, huisId=' + req.params.huisId + ', maaltijdId=' + req.params.maaltijdId);
         try {
             assert(isNaN(req.params.huisId) === false, 'huisId moet een nummer zijn');
@@ -87,8 +78,8 @@ module.exports = {
                         db.query(query, function (err, rows) {
                             if (err) {
                                 if (err.errno === 1062) {
-                                    const ApiError = new ApiError('Dit account is al ingeschreven', 409);
-                                    next(ApiError);
+                                    const err = new ApiError('Dit account is al ingeschreven', 409);
+                                    next(err);
                                 } else {
                                 //Als de database een error gooit doe je dit
                                 res.status(400).json(ApiError);
