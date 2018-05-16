@@ -25,9 +25,9 @@ module.exports = {
         } catch (e) {
 
             //Geef een nieuwe error omdat een assert is mislukt
-            const ApiError = new error(e.toString(), 422);
-            next(ApiError);
-            return;
+            // const ApiError = new error(e.toString(), 422);
+            // next(ApiError);
+            // return;
 
         }
 
@@ -51,7 +51,7 @@ module.exports = {
 
 
     // Decode (van token naar username)
-    decodeToken: function (token, callback) {
+    decodeToken: function (token, callback, next) {
 
         try{
 
