@@ -24,8 +24,6 @@ module.exports = {
                 userId = payload.sub;
             }
         });
-        let token = req.headers['authorization'];
-        let payload = jwt.decode(token, config.secretkey);
 
         console.log("userId: " + userId);
 
@@ -53,8 +51,8 @@ module.exports = {
                 res.status(400).json(err);
             } else if (rows[0] === undefined) {
                 console.log('huisId does not exist');
-                const ApiError = new ApiError('huisId does not exist', 404);
-                next(ApiError);
+                const existError = new ApiError('huisId does not exist', 404);
+                next(existError);
             } else {
                 //Validates wheter maaltijdId exists or not
                 let doesMaaltijdIdExistQuery = {
@@ -120,8 +118,8 @@ module.exports = {
             assert(req.params.maaltijdId.indexOf('-') === -1, 'maaltijdId can\'t be negative');
             assert(req.params.maaltijdId.indexOf('.') === -1, 'maaltijdId can\'t be a decimal');
         } catch (e) {
-            const ApiError = new ApiError(e.toString(), 412);
-            next(ApiError);
+            const deelnemerError = new ApiError(e.toString(), 412);
+            next(deelnemerError);
             return
         }
 
@@ -135,8 +133,8 @@ module.exports = {
                 res.status(400).json(err);
             } else if (rows[0] === undefined) {
                 console.log('huisId does not exist');
-                const ApiError = new ApiError('huisId does not exist', 404);
-                next(ApiError);
+                const houseError = new ApiError('huisId does not exist', 404);
+                next(houseError);
             } else {
                 //Validates wheter maaltijdId exists or not
                 let doesMaaltijdIdExistQuery = {
@@ -188,7 +186,16 @@ module.exports = {
         });
     },
     deleteDeelnemer(req, res, next){
-        let userId = '1';
+        auth.decodeToken(req.headers['authorization'], (error, payload) => {
+            if(error)   {
+                const noValidTokenError = new ApiError("Not a valid token", 401);
+                response.status(401).json(noValidTokenError);
+            } else {
+                userId = payload.sub;
+            }
+        });
+
+        console.log("userId: " + userId);
 
         console.log('deleteDeelnemer was called. huisId= ' + req.params.huisId + ', maaltijdId=' + req.params.maaltijdId);
         try {
