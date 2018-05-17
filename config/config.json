@@ -1,6 +1,0 @@
-{
-  "webPort" : "3000",
-  "dbHost" : "localhost",
-  "dbUser" : "username",
-  "dbDatabase" : "studentenhuis"
-}

@@ -9,9 +9,6 @@ const auth = require('../auth/authentication');
 chai.should();
 chai.use(chaiHttp);
 
-let token = auth.encodeToken(1, 'meeltje@mail.com');
-console.log('TOKEN:' +  token);
-
 describe('Maaltijd API POST', () => {
     // it('should throw an error when using invalid JWT token', (done) => {
     //     //
@@ -31,7 +28,6 @@ describe('Maaltijd API POST', () => {
         chai.request(server)
             .post("/api/studentenhuis/1/maaltijd")
             .send(maaltijd)
-            .set('authorization', token)
             .end((err, res) =>  {
                 res.should.have.status(200);
                 res.body.should.have.property("ID");
@@ -60,7 +56,6 @@ describe('Maaltijd API POST', () => {
         chai.request(server)
             .post("/api/studentenhuis/1/maaltijd")
             .send(maaltijd)
-            .set('authorization', token)
             .end((err, res) =>  {
                 res.should.have.status(412);
                 res.body.should.have.property("message");
@@ -80,7 +75,6 @@ describe('Maaltijd API POST', () => {
         chai.request(server)
             .post("/api/studentenhuis/1/maaltijd")
             .send(maaltijd)
-            .set('authorization', token)
             .end((err, res) =>  {
                 res.should.have.status(412);
                 res.body.should.have.property("message");
@@ -120,7 +114,6 @@ describe('Maaltijd API POST', () => {
         chai.request(server)
             .post("/api/studentenhuis/1/maaltijd")
             .send(maaltijd)
-            .set('authorization', token)
             .end((err, res) =>  {
                 res.should.have.status(412);
                 res.body.should.have.property("message");
@@ -140,7 +133,6 @@ describe('Maaltijd API POST', () => {
         chai.request(server)
             .post("/api/studentenhuis/1/maaltijd")
             .send(maaltijd)
-            .set('authorization', token)
             .end((err, res) =>  {
                 res.should.have.status(412);
                 res.body.should.have.property("message");
@@ -184,7 +176,6 @@ describe('Maaltijd API GET ALL', () => {
         chai.request(server)
             .get("/api/studentenhuis/1/maaltijd")
             .send()
-            .set('authorization', token)
             .end((err, res) =>  {
                 res.should.have.status(200);
             });
@@ -195,7 +186,6 @@ describe('Maaltijd API GET ALL', () => {
         chai.request(server)
             .get("/api/studentenhuis/10000000/maaltijd")
             .send()
-            .set('authorization', token)
             .end((err, res) =>  {
                 res.should.have.status(404);
                 res.body.should.have.property("message");
@@ -218,7 +208,6 @@ describe('Maaltijd API GET ONE', () => {
         chai.request(server)
             .get("/api/studentenhuis/1/maaltijd/1")
             .send()
-            .set('authorization', token)
             .end((err, res) =>  {
                 res.should.have.status(200);
                 res.body.should.have.property("ID");
@@ -241,7 +230,6 @@ describe('Maaltijd API GET ONE', () => {
         chai.request(server)
             .get("/api/studentenhuis/10000000/maaltijd/1")
             .send()
-            .set('authorization', token)
             .end((err, res) =>  {
                 res.should.have.status(404);
                 res.body.should.have.property("message");
@@ -255,7 +243,6 @@ describe('Maaltijd API GET ONE', () => {
         chai.request(server)
             .get("/api/studentenhuis/1/maaltijd/10000000")
             .send()
-            .set('authorization', token)
             .end((err, res) =>  {
                 res.should.have.status(404);
                 res.body.should.have.property("message");
@@ -285,7 +272,6 @@ describe('maaltijd API PUT', () => {
         chai.request(server)
             .put("/api/studentenhuis/1/maaltijd/1")
             .send(maaltijd)
-            .set('authorization', token)
             .end((err, res) =>  {
                 res.should.have.status(200);
                 res.body.should.have.property("ID");
@@ -314,7 +300,6 @@ describe('maaltijd API PUT', () => {
         chai.request(server)
             .put("/api/studentenhuis/1/maaltijd/1")
             .send(maaltijd)
-            .set('authorization', token)
             .end((err, res) =>  {
                 res.should.have.status(412);
                 res.body.should.have.property("message");
@@ -334,7 +319,6 @@ describe('maaltijd API PUT', () => {
         chai.request(server)
             .put("/api/studentenhuis/1/maaltijd/1")
             .send(maaltijd)
-            .set('authorization', token)
             .end((err, res) =>  {
                 res.should.have.status(412);
                 res.body.should.have.property("message");
@@ -354,7 +338,6 @@ describe('maaltijd API PUT', () => {
         chai.request(server)
             .put("/api/studentenhuis/1/maaltijd/1")
             .send(maaltijd)
-            .set('authorization', token)
             .end((err, res) =>  {
                 res.should.have.status(412);
                 res.body.should.have.property("message");
@@ -374,7 +357,6 @@ describe('maaltijd API PUT', () => {
         chai.request(server)
             .put("/api/studentenhuis/1/maaltijd/1")
             .send(maaltijd)
-            .set('authorization', token)
             .end((err, res) =>  {
                 res.should.have.status(412);
                 res.body.should.have.property("message");
@@ -394,7 +376,6 @@ describe('maaltijd API PUT', () => {
         chai.request(server)
             .put("/api/studentenhuis/1000000/maaltijd/1")
             .send(maaltijd)
-            .set('authorization', token)
             .end((err, res) =>  {
                 res.should.have.status(404);
                 res.body.should.have.property("message");
@@ -414,7 +395,6 @@ describe('maaltijd API PUT', () => {
         chai.request(server)
             .put("/api/studentenhuis/1/maaltijd/10000000")
             .send(maaltijd)
-            .set('authorization', token)
             .end((err, res) =>  {
                 res.should.have.status(404);
                 res.body.should.have.property("message");
@@ -434,7 +414,6 @@ describe('maaltijd API PUT', () => {
         chai.request(server)
             .put("/api/studentenhuis/1/maaltijd/-1")
             .send(maaltijd)
-            .set('authorization', token)
             .end((err, res) =>  {
                 res.should.have.status(412);
                 res.body.should.have.property("message");
@@ -454,7 +433,6 @@ describe('maaltijd API PUT', () => {
         chai.request(server)
             .put("/api/studentenhuis/-1/maaltijd/1")
             .send(maaltijd)
-            .set('authorization', token)
             .end((err, res) =>  {
                 res.should.have.status(412);
                 res.body.should.have.property("message");
@@ -477,9 +455,8 @@ describe('Maaltijd API DELETE', () => {
         chai.request(server)
             .delete("/api/studentenhuis/1/maaltijd/20")
             .send()
-            .set('authorization', token)
             .end((err, res) =>  {
-                res.should.have.status(404);
+                res.should.have.status(200);
                 res.body.should.have.property("message");
             });
         done()
@@ -489,7 +466,6 @@ describe('Maaltijd API DELETE', () => {
         chai.request(server)
             .delete("/api/studentenhuis/100000000/maaltijd/20")
             .send()
-            .set('authorization', token)
             .end((err, res) =>  {
                 res.should.have.status(404);
                 res.body.should.have.property("message");
@@ -503,7 +479,6 @@ describe('Maaltijd API DELETE', () => {
         chai.request(server)
             .delete("/api/studentenhuis/1/maaltijd/10000000")
             .send()
-            .set('authorization', token)
             .end((err, res) =>  {
                 res.should.have.status(404);
                 res.body.should.have.property("message");
