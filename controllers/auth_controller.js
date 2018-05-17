@@ -13,11 +13,6 @@ module.exports = {
     //Token validatie methode
     validateToken: function (request, response, next) {
 
-<<<<<<< HEAD
-        let token = request.headers['authorization'];
-        console.log("Token: " + token);
-        
-=======
         //Log
         console.log("validating token...");
 
@@ -33,7 +28,6 @@ module.exports = {
                 "code": 401,
                 "datetime": moment()
             }
->>>>>>> feature
 
         if (!token) {
             console.log("no token received");
