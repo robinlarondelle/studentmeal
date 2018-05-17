@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const auth = require('../auth/authentication');
 const moment = require("moment");
 const db = require('../config/database');
@@ -248,3 +249,5 @@ module.exports = {
         }
     }
 }
+=======
+>>>>>>> parent of 4cb6cea... Final version

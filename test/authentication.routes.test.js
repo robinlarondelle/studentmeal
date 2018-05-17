@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // /**
 //  * Testcases aimed at testing the authentication process. 
 //  */
@@ -480,3 +481,5 @@ describe('Login', () => {
 //     validToken
 // }
 >>>>>>> feature
+=======
+>>>>>>> parent of 4cb6cea... Final version
