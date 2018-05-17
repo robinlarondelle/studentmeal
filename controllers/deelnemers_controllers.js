@@ -51,8 +51,14 @@ module.exports = {
                 res.status(400).json(err);
             } else if (rows[0] === undefined) {
                 console.log('huisId does not exist');
+<<<<<<< HEAD
+                const err = new ApiError('huisId does not exist', 404);
+                next(err);
+
+=======
                 const ApiError = new ApiError('huisId does not exist', 404);
                 next(ApiError);
+>>>>>>> parent of 20bb1b3... Fixed deelnemer controller and test
             } else {
                 //Validates wheter maaltijdId exists or not
                 let doesMaaltijdIdExistQuery = {
