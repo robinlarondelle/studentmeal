@@ -36,8 +36,8 @@ module.exports = {
             assert(req.params.maaltijdId.indexOf('-') === -1, 'maaltijdId can\'t be negative');
             assert(req.params.maaltijdId.indexOf('.') === -1, 'maaltijdId can\'t be a decimal');
         } catch (e) {
-            const ApiError = new ApiError(e.toString(), 412);
-            next(ApiError);
+            const err = new ApiError(e.toString(), 412);
+            next(err);
             return
         }
 
@@ -51,14 +51,9 @@ module.exports = {
                 res.status(400).json(err);
             } else if (rows[0] === undefined) {
                 console.log('huisId does not exist');
-<<<<<<< HEAD
                 const err = new ApiError('huisId does not exist', 404);
                 next(err);
 
-=======
-                const ApiError = new ApiError('huisId does not exist', 404);
-                next(ApiError);
->>>>>>> parent of 20bb1b3... Fixed deelnemer controller and test
             } else {
                 //Validates wheter maaltijdId exists or not
                 let doesMaaltijdIdExistQuery = {
@@ -70,8 +65,8 @@ module.exports = {
                         res.status(400).json(err);
                     } else if (rows[0] === undefined) {
                         console.log('maaltijdId does not exist');
-                        const ApiError = new ApiError('maaltijdId does not exist', 404);
-                        next(ApiError);
+                        const err = new ApiError('maaltijdId does not exist', 404);
+                        next(err);
                     } else {
                         //Bouwt query op
                         let query = {
@@ -139,8 +134,8 @@ module.exports = {
                 res.status(400).json(err);
             } else if (rows[0] === undefined) {
                 console.log('huisId does not exist');
-                const ApiError = new ApiError('huisId does not exist', 404);
-                next(ApiError);
+                const err = new ApiError('huisId does not exist', 404);
+                next(err);
             } else {
                 //Validates wheter maaltijdId exists or not
                 let doesMaaltijdIdExistQuery = {
@@ -152,8 +147,8 @@ module.exports = {
                         res.status(400).json(err);
                     } else if (rows[0] === undefined) {
                         console.log('maaltijdId does not exist');
-                        const ApiError = new ApiError('maaltijdId does not exist', 404);
-                        next(ApiError);
+                        const err = new ApiError('maaltijdId does not exist', 404);
+                        next(err);
                     } else {
                         //Validates wheter the combination maaltijdId/deelnemerId exists or not
                         let doesCombinationExistQuery = {
@@ -165,8 +160,8 @@ module.exports = {
                                 res.status(400).json(err);
                             } else if (rows[0] === undefined) {
                                 console.log('Combination maaltijdId/deelnemerId does not exist');
-                                const ApiError = new ApiError('Combination maaltijdId/deelnemerId does not exist', 404);
-                                next(ApiError);
+                                const err = new ApiError('Combination maaltijdId/deelnemerId does not exist', 404);
+                                next(err);
                             } else {
                                 //Bouwt query op
                                 let query = {
@@ -227,8 +222,8 @@ module.exports = {
                 res.status(400).json(err);
             } else if (rows[0] === undefined){
                 console.log('huisId does not exist');
-                const ApiError = new ApiError('huisId does not exist', 404);
-                next(ApiError);
+                const err = new ApiError('huisId does not exist', 404);
+                next(err);
             } else {
                 //Validates wheter maaltijdId exists or not
                 let doesMaaltijdIdExistQuery = {
@@ -240,8 +235,8 @@ module.exports = {
                         res.status(400).json(err);
                     } else if (rows[0] === undefined) {
                         console.log('maaltijdId does not exist');
-                        const ApiError = new ApiError('maaltijdId does not exist', 404);
-                        next(ApiError);
+                        const err = new ApiError('maaltijdId does not exist', 404);
+                        next(err);
                     } else {
                         //Validates wheter the combination maaltijdId/deelnemerId exists or not
                         let doesCombinationExistQuery = {
@@ -253,8 +248,8 @@ module.exports = {
                                 res.status(400).json(err);
                             } else if (rows[0] === undefined) {
                                 console.log('Combination maaltijdId/deelnemerId does not exist');
-                                const ApiError = new ApiError('Combination maaltijdId/deelnemerId does not exist', 404);
-                                next(ApiError);
+                                const err = new ApiError('Combination maaltijdId/deelnemerId does not exist', 404);
+                                next(err);
                             } else {
                                 //Validates wheter the user is the owner or not
                                 let isUserOwnerQuery = {
@@ -266,8 +261,8 @@ module.exports = {
                                         res.status(400).json(err);
                                     } else if (rows[0] === undefined){
                                         console.log('User is not the owner');
-                                        const ApiError = new ApiError('Only the owner can change studentenhuizen', 401);
-                                        next(ApiError);
+                                        const err = new ApiError('Only the owner can change studentenhuizen', 401);
+                                        next(err);
                                     } else {
                                         //Bouwt query op
                                         let query = {

@@ -9,6 +9,9 @@ const auth = require('../auth/authentication');
 chai.should();
 chai.use(chaiHttp);
 
+let token = auth.encodeToken(1, 'meeltje@mail.com');
+console.log('TOKEN:' +  token);
+
 describe('Studentenhuis API POST', () => {
     // it('should throw an error when using invalid JWT token', (done) => {
     //     //
@@ -26,6 +29,7 @@ describe('Studentenhuis API POST', () => {
         chai.request(server)
             .post("/api/studentenhuis")
             .send(studentenhuis)
+            .set('authorization', token)
             .end((err, res) =>  {
                 res.should.have.status(200);
                 res.body.should.have.property("ID");
@@ -50,6 +54,7 @@ describe('Studentenhuis API POST', () => {
         chai.request(server)
             .post("/api/studentenhuis")
             .send(studentenhuis)
+            .set('authorization', token)
             .end((err, res) =>  {
                 res.should.have.status(412);
                 res.body.should.have.property("message");
@@ -67,6 +72,7 @@ describe('Studentenhuis API POST', () => {
         chai.request(server)
             .post("/api/studentenhuis")
             .send(studentenhuis)
+            .set('authorization', token)
             .end((err, res) =>  {
                 res.should.have.status(412);
                 res.body.should.have.property("message");
@@ -86,6 +92,7 @@ describe('Studentenhuis API GET all', () => {
         chai.request(server)
             .get("/api/studentenhuis")
             .send()
+            .set('authorization', token)
             .end((err, res) =>  {
                 res.should.have.status(200);
             });
@@ -105,6 +112,7 @@ describe('Studentenhuis API GET one', () => {
         chai.request(server)
             .get("/api/studentenhuis/1")
             .send()
+            .set('authorization', token)
             .end((err, res) =>  {
                 res.should.have.status(200);
                 res.body.should.have.property("ID");
@@ -125,6 +133,7 @@ describe('Studentenhuis API GET one', () => {
         chai.request(server)
             .get("/api/studentenhuis/10000000")
             .send()
+            .set('authorization', token)
             .end((err, res) =>  {
                 res.should.have.status(404);
                 res.body.should.have.property("message");
@@ -152,6 +161,7 @@ describe('Studentenhuis API PUT', () => {
         chai.request(server)
             .put("/api/studentenhuis/1")
             .send(studentenhuis)
+            .set('authorization', token)
             .end((err, res) =>  {
                 res.should.have.status(200);
                 res.body.should.have.property("ID");
@@ -176,6 +186,7 @@ describe('Studentenhuis API PUT', () => {
         chai.request(server)
             .put("/api/studentenhuis/1")
             .send(studentenhuis)
+            .set('authorization', token)
             .end((err, res) =>  {
                 res.should.have.status(412);
                 res.body.should.have.property("message");
@@ -216,6 +227,7 @@ describe('Studentenhuis API DELETE', () => {
         chai.request(server)
             .delete("/api/studentenhuis/1")
             .send()
+            .set('authorization', token)
             .end((err, res) =>  {
                 res.should.have.status(200);
                 res.body.should.have.property("message");
@@ -227,6 +239,7 @@ describe('Studentenhuis API DELETE', () => {
         chai.request(server)
             .delete("/api/studentenhuis/100000000")
             .send()
+            .set('authorization', token)
             .end((err, res) =>  {
                 res.should.have.status(404);
                 res.body.should.have.property("message");
