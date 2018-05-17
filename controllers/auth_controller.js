@@ -29,21 +29,22 @@ module.exports = {
                 "datetime": moment()
             }
 
-        if (!token) {
-            console.log("no token received");
-            const tokenError = new ApiError("Geen token meegegeven", 403);
-            response.status(403).json(tokenError);
-        } else {
-            auth.decodeToken(token, (err, payload) => {
-                if (err) {
-                    console.log("Error when decoding token");
-                    const decodeError = new ApiError(error.message || error, 401);
-                    next(decodeError);
-                } else {
-                    console.log("token approved");
-                    next();
-                }
-            })
+            if (!token) {
+                console.log("no token received");
+                const tokenError = new ApiError("Geen token meegegeven", 403);
+                response.status(403).json(tokenError);
+            } else {
+                auth.decodeToken(token, (err, payload) => {
+                    if (err) {
+                        console.log("Error when decoding token");
+                        const decodeError = new ApiError(error.message || error, 401);
+                        next(decodeError);
+                    } else {
+                        console.log("token approved");
+                        next();
+                    }
+                })
+            }
         }
     },
 
